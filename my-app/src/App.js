@@ -1,36 +1,29 @@
 import React from 'react';
-import axios from 'axios';
 
-import CardList from './components/CardList';
 
 import './App.css';
+import Card from './components/Card';
 
 
 class App extends React.Component{
   constructor(){
     super();
     this.state = {
-      cardData: []
-    }
+      user: {}
+    };
   }
 
   componentDidMount(){
-    axios
-    .get('https://api.github.com/users/DarneaPinkett')
-    .then(res => {
-      this.setState(()=> ({cardData: res.data}))
-      console.log(res, 'response for API')
-      console.log(this.state.cardData, 'State data')
-    })
-    .catch(err => {
-      console.log('The error.', err)
-    })
+    fetch('https://api.github.com/users/DarneaPinkett')
+    .then(res => res.json())
+    .then(user => {console.log("USER", user); this.setState({user: user})})
+    .catch(err => console.log("error"));
   }
 
   render() {
     return (
       <div className="App">
-        <CardList cards={this.state.cardData}/>
+        <Card user={this.state.user}/>
       </div>
     )
   }
